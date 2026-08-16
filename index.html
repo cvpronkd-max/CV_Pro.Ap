@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="CV-Pro — créez un CV professionnel qui vous ressemble.">
+<meta name="theme-color" content="#101A2E">
+<title>CV-Pro — Créez un CV professionnel (Par Dan Production)</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23101A2E'/><text x='50' y='68' font-size='54' text-anchor='middle' fill='%23C6A15B' font-family='Georgia'>CV</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================================
+   TOKENS
+   ===================================================================== */
+:root {
+  --app-bg: #101A2E;
+  --app-bg-elevated: #17233D;
+  --app-bg-raised: #1E2C48;
+  --ink-text: #E8E6DD;
+  --muted: #8B93A7;
+  --muted-dim: #5C6480;
+
+  --brass: #C6A15B;
+  --brass-deep: #A9823F;
+  --brass-soft: rgba(198, 161, 91, 0.16);
+
+  --paper: #FFFFFF;
+  --graphite: #232323;
+  --graphite-soft: #55575E;
+
+  --success: #4E9668;
+  --danger: #C1503F;
+
+  --line-navy: rgba(255, 255, 255, 0.10);
+  --line-paper: #E4E1D8;
+
+  --accent: var(--brass);
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ui: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 18px;
+
+  --shadow-paper: 0 30px 60px -20px rgba(0,0,0,0.55), 0 8px 20px -8px rgba(0,0,0,0.4);
+}
+
+* { box-sizing: border-box; min-width: 0; }
+html, body { margin: 0; padding: 0; }
+html {
+  /* Empêche tout élément trop large (champs accolés, select natif, etc.)
+     de créer un défilement horizontal : seul le défilement vertical est permis. */
+  overflow-x: hidden;
+}
+body {
+  background: var(--app-bg);
+  color: var(--ink-text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100svh;
+  overflow-x: hidden;
+  width: 100%;
+}
+button { font-family: inherit; cursor: pointer; }
+input, textarea, select { font-family: inherit; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+p { margin: 0; }
+
+.eyebrow, .section-label, .step-count {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: var(--brass);
+}
+
+/* =====================================================================
+   BOUTONS
+   ===================================================================== */
+.btn {
+  border-radius: var(--radius-m);
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid transparent;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--brass); color: #1A1204; }
+.btn-primary:hover { background: #D4B06D; }
+.btn-outline { background: transparent; color: var(--ink-text); border-color: var(--line-navy); }
+.btn-outline:hover { border-color: var(--brass); color: var(--brass); }
+.btn-ghost { background: transparent; color: var(--muted); border: none; }
+.btn-lg { padding: 16px 28px; font-size: 16px; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--app-bg-raised); border: 1px solid var(--line-navy);
+  color: var(--ink-text); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* =====================================================================
+   ÉCRANS
+   ===================================================================== */
+.screen { display: none; min-height: 100svh; }
+.screen.is-active { display: block; }
+
+/* =====================================================================
+   ACCUEIL
+   ===================================================================== */
+.home-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px;
+}
+.home-logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--brass); color: #1A1204;
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-word { font-family: var(--font-display); font-size: 19px; font-weight: 600; }
+
+.home-hero { padding: 48px 24px 20px; max-width: 720px; }
+.home-hero .eyebrow { margin-bottom: 14px; display: block; }
+.home-title {
+  font-size: 42px; line-height: 1.08; font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.home-sub {
+  margin-top: 18px; color: var(--muted); font-size: 16px; line-height: 1.6;
+  max-width: 52ch;
+}
+.home-cta { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+
+.home-templates { padding: 40px 24px 60px; }
+.section-label { display: block; margin-bottom: 16px; }
+.template-strip {
+  display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px;
+  scrollbar-width: none;
+}
+.template-strip::-webkit-scrollbar { display: none; }
+.template-card {
+  flex: 0 0 128px; display: flex; flex-direction: column; gap: 10px;
+  opacity: 0.45; cursor: default;
+}
+.template-card.is-ready { opacity: 1; cursor: pointer; }
+.template-card span { font-size: 13px; color: var(--muted); }
+.template-card em { font-style: normal; font-size: 10px; color: var(--muted-dim); display: block; }
+.template-thumb {
+  width: 128px; height: 168px; border-radius: var(--radius-s);
+  background: var(--paper); border: 1px solid var(--line-navy);
+  position: relative; overflow: hidden;
+}
+.template-thumb::before {
+  content: ""; position: absolute; top: 14px; left: 14px; right: 14px; height: 8px;
+  background: #d8d3c4; border-radius: 2px;
+}
+.template-thumb::after {
+  content: ""; position: absolute; top: 32px; left: 14px; right: 30px; height: 4px;
+  background: #eae7dc; border-radius: 2px;
+  box-shadow: 0 10px 0 #eae7dc, 0 20px 0 #eae7dc, 0 34px 0 #eae7dc, 0 44px 0 #eae7dc;
+}
+.thumb-modern::before { background: var(--brass); }
+.thumb-executive::before { background: #2A2A2A; height: 5px; }
+.thumb-minimal::before { background: #9A9689; height: 3px; width: 40%; left: 14px; }
+.thumb-creative { background: var(--brass); }
+.thumb-creative::before { background: rgba(255,255,255,0.6); }
+.thumb-creative::after { background: rgba(255,255,255,0.85); box-shadow: 0 10px 0 rgba(255,255,255,0.85), 0 20px 0 rgba(255,255,255,0.85), 0 34px 0 rgba(255,255,255,0.85), 0 44px 0 rgba(255,255,255,0.85); }
+.thumb-ats::before { background: #000; height: 3px; }
+.thumb-ats::after { background: #E0E0E0; box-shadow: 0 10px 0 #E0E0E0, 0 20px 0 #E0E0E0, 0 34px 0 #E0E0E0, 0 44px 0 #E0E0E0; }
+
+/* =====================================================================
+   ÉDITEUR — STRUCTURE GÉNÉRALE
+   ===================================================================== */
+.screen-editor { padding-bottom: 78px; }
+.editor-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; position: sticky; top: 0; z-index: 20;
+  background: var(--app-bg); border-bottom: 1px solid var(--line-navy);
+}
+.save-indicator {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.save-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+.save-indicator.is-saving .save-dot { background: var(--brass); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.3; } }
+
+.pane { display: none; padding: 20px 16px 8px; }
+.pane.is-active { display: block; }
+
+/* --- Onglets style "dossier" --- */
+.dossier-tabs { display: flex; gap: 4px; overflow-x: auto; margin-bottom: 22px; scrollbar-width: none; }
+.dossier-tabs::-webkit-scrollbar { display: none; }
+.dossier-tab {
+  flex: 0 0 auto; padding: 9px 14px 8px; font-size: 12.5px; font-weight: 600;
+  color: var(--muted); background: var(--app-bg-elevated);
+  border: 1px solid var(--line-navy); border-bottom: none;
+  border-radius: 8px 8px 0 0; white-space: nowrap;
+  position: relative; top: 1px;
+}
+.dossier-tab.is-active { color: var(--brass); background: var(--app-bg-raised); border-color: var(--brass-deep); }
+.dossier-tab.is-done { color: var(--success); }
+.dossier-tab.is-done::before { content: "✓ "; }
+
+.step-progress-track {
+  height: 3px; background: var(--line-navy); border-radius: 3px; margin-bottom: 18px; overflow: hidden;
+}
+.step-progress-bar {
+  height: 100%; background: var(--brass); border-radius: 3px; width: 12.5%;
+  transition: width .35s ease;
+}
+
+.step-header { margin-bottom: 20px; }
+.step-title { font-size: 24px; margin-top: 6px; }
+
+.step-body { display: flex; flex-direction: column; gap: 16px; }
+.step-body.step-anim { animation: stepSlideIn .32s cubic-bezier(.22,.9,.32,1); }
+@keyframes stepSlideIn {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.field input, .field textarea, .field select {
+  background: var(--app-bg-elevated); border: 1px solid var(--line-navy);
+  border-radius: var(--radius-s); padding: 12px 14px; color: var(--ink-text); font-size: 15px;
+  width: 100%; min-width: 0; max-width: 100%;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: 2px solid var(--brass); outline-offset: 1px; border-color: var(--brass);
+}
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1 1 0; min-width: 0; }
+@media (max-width: 380px) {
+  /* Sur les très petits écrans, deux champs côte à côte (ex: téléphone + email)
+     deviennent trop étroits pour rester lisibles : on les empile à la place. */
+  .field-row { flex-direction: column; }
+}
+.field-help { font-size: 12px; color: var(--muted-dim); }
+.field-check { display: flex; align-items: center; gap: 8px; flex-direction: row; }
+.field-check label { text-transform: none; font-size: 14px; color: var(--ink-text); }
+
+.field-group-title {
+  font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--brass); margin: 6px 0 -6px; padding-top: 10px; border-top: 1px solid var(--line-navy);
+}
+.step-body > .field-group-title:first-child { border-top: none; padding-top: 0; }
+.field-group-optional { color: var(--muted-dim); text-transform: none; letter-spacing: 0; font-family: var(--font-ui); }
+
+.entry-card {
+  background: var(--app-bg-elevated); border: 1px solid var(--line-navy);
+  border-radius: var(--radius-m); padding: 16px; display: flex; flex-direction: column; gap: 12px;
+}
+.entry-card-head { display: flex; justify-content: space-between; align-items: center; }
+.entry-card-title { font-weight: 600; font-size: 15px; }
+.entry-card-actions { display: flex; gap: 6px; }
+.entry-card-actions button {
+  background: none; border: none; color: var(--muted); font-size: 15px; padding: 4px;
+}
+.entry-card-actions button:hover { color: var(--brass); }
+
+.add-entry-btn {
+  border: 1.5px dashed var(--line-navy); background: transparent; color: var(--muted);
+  border-radius: var(--radius-m); padding: 14px; font-weight: 600; font-size: 14px;
+}
+.add-entry-btn:hover { border-color: var(--brass); color: var(--brass); }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.tag-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--app-bg-raised); border: 1px solid var(--line-navy);
+  border-radius: 999px; padding: 6px 6px 6px 12px; font-size: 13px;
+}
+.tag-pill button { background: none; border: none; color: var(--muted); font-size: 13px; }
+
+.step-nav {
+  display: flex; justify-content: space-between; gap: 10px; margin-top: 26px;
+  position: sticky; bottom: calc(70px + env(safe-area-inset-bottom));
+  padding: 12px 0 4px; background: linear-gradient(to top, var(--app-bg) 60%, transparent);
+  z-index: 5;
+}
+.step-nav .btn { flex: 1; }
+
+.optional-sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.optional-toggle {
+  background: var(--app-bg-elevated); border: 1px solid var(--line-navy);
+  border-radius: var(--radius-s); padding: 12px; font-size: 13px; text-align: left; color: var(--ink-text);
+}
+.optional-toggle.is-active { border-color: var(--brass); color: var(--brass); background: var(--brass-soft); }
+
+/* =====================================================================
+   APERÇU — FEUILLE A4
+   ===================================================================== */
+.preview-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.page-indicator { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+/* Visionneuse type "lecteur PDF" : zoom molette/pinch + déplacement au doigt/souris */
+.preview-viewport {
+  position: relative; overflow: hidden; touch-action: none;
+  height: calc(100svh - 250px); min-height: 320px;
+  border-radius: var(--radius-m); background: var(--app-bg-elevated);
+  cursor: grab;
+}
+.preview-viewport.is-dragging { cursor: grabbing; }
+.paper-stage {
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 24px 0 40px; width: 100%; height: 100%;
+  transform-origin: center top;
+  transition: transform .05s linear;
+}
+.preview-viewport.is-dragging .paper-stage { transition: none; }
+.cv-sheet {
+  width: 210mm; min-height: 297mm; background: var(--paper);
+  box-shadow: var(--shadow-paper); color: var(--graphite);
+  transform-origin: top center;
+  transform: scale(var(--sheet-scale, 0.42));
+  margin-bottom: calc(-297mm * (1 - var(--sheet-scale, 0.42)));
+  flex: 0 0 auto;
+  user-select: none;
+}
+.zoom-controls {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 12px;
+}
+.zoom-btn {
+  min-width: 40px; height: 40px; border-radius: var(--radius-s);
+  background: var(--app-bg-elevated); border: 1px solid var(--line-navy);
+  color: var(--ink-text); font-size: 17px; font-weight: 600; padding: 0 12px;
+}
+.zoom-btn:hover { border-color: var(--brass); color: var(--brass); }
+.zoom-reset { font-family: var(--font-mono); font-size: 12px; min-width: 58px; }
+
+/* --- Base commune à tous les modèles : photo, structure des entrées,
+   typographie et espacement. Chaque modèle personnalise ensuite fortement
+   la mise en page (colonnes, position de la photo, couleurs) pour une
+   identité vraiment distincte — mais tous partagent la même échelle de
+   lecture standard et le même système d'espacement intelligent. */
+.cv-photo { object-fit: cover; flex-shrink: 0; display: block; }
+.cv-photo.shape-ronde { border-radius: 50%; }
+.cv-photo.shape-carree { border-radius: 4px; }
+.entry-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+
+/* --- Écriture : le sélecteur "Police" (Moderne / Élégante / Classique /
+   Technique) change réellement la typographie utilisée, sans toucher au
+   reste du design (couleurs, mise en page, photo). "Moderne" = valeur par
+   défaut : chaque modèle garde alors sa typographie propre définie plus bas.
+   Les 3 autres choix imposent une paire de polices uniforme, quel que soit
+   le modèle sélectionné. --- */
+.cv-sheet[data-font="elegante"]  { --cv-font-display: 'Fraunces', Georgia, serif; --cv-font-body: Georgia, 'Fraunces', serif; --cv-font-accent: Georgia, serif; }
+.cv-sheet[data-font="classique"] { --cv-font-display: Georgia, 'Times New Roman', Times, serif; --cv-font-body: Georgia, 'Times New Roman', Times, serif; --cv-font-accent: Georgia, serif; }
+.cv-sheet[data-font="technique"] { --cv-font-display: var(--font-ui); --cv-font-body: var(--font-ui); --cv-font-accent: var(--font-mono); }
+
+.cv-name { font-family: var(--cv-font-display); margin: 0; }
+.cv-role, .cv-contact, .cv-profile, .entry-title, .entry-sub, .entry-desc,
+.lang-row, .skill-chip { font-family: var(--cv-font-body); }
+.cv-section h3, .entry-dates { font-family: var(--cv-font-accent); }
+
+/* --- Échelle de lecture standard (14px) sur tous les modèles : seuls les
+   titres d'en-tête (nom, accroche) gardent une taille propre à chaque
+   identité visuelle — le texte courant, lui, reste lisible partout. --- */
+.cv-sheet { font-size: 14px; }
+.cv-profile { font-size: 1em; line-height: 1.6; }
+.entry-title { font-size: 1.02em; font-weight: 700; }
+.entry-sub { font-size: 0.86em; }
+.entry-dates { font-size: 0.72em; white-space: nowrap; }
+.entry-desc { font-size: 0.86em; line-height: 1.55; margin-top: calc(4px * var(--cv-gap-scale, 1)); }
+.entry-desc ul { margin: 4px 0 0; padding-left: 16px; }
+.entry-desc li { margin-bottom: 2px; }
+.cv-section h3 { font-size: 0.76em; letter-spacing: 0.1em; text-transform: uppercase; padding-bottom: 4px; margin-bottom: calc(8px * var(--cv-gap-scale, 1)); }
+.skill-chip { font-size: 0.8em; }
+.lang-row { display: flex; justify-content: space-between; font-size: 0.86em; margin-bottom: calc(5px * var(--cv-gap-scale, 1)); }
+.cv-contact { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 10px; font-size: 0.72em; }
+.empty-hint { font-size: 0.72em; font-style: italic; }
+
+/* --- Espacement intelligent : ce facteur (--cv-gap-scale) est recalculé
+   après chaque saisie pour qu'un CV bref respire davantage entre les
+   informations, et qu'un CV dense se resserre légèrement pour tenir sur une
+   page — toujours dans une fourchette raisonnable, et sans jamais changer
+   la taille du texte ci-dessus. */
+.cv-section { break-inside: avoid; margin-bottom: calc(4px * var(--cv-gap-scale, 1)); }
+.entry { margin-bottom: calc(10px * var(--cv-gap-scale, 1)); }
+.skills-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* --- Template Modern : photo en médaillon à côté du nom --- */
+.template-modern {
+  padding: 20mm 18mm;
+  --cv-font-display: var(--font-display); --cv-font-body: var(--font-ui); --cv-font-accent: var(--font-mono);
+}
+.template-modern .cv-head {
+  display: flex; align-items: center; gap: 16px; padding-bottom: 14px;
+  border-bottom: 2px solid var(--accent);
+}
+.template-modern .cv-photo {
+  width: 26mm; height: 26mm;
+  border: 2px solid var(--accent);
+}
+.template-modern .cv-name {
+  font-size: 30px; font-weight: 600; color: #14141A;
+}
+.template-modern .cv-role {
+  font-size: 14px; color: var(--accent); font-weight: 600; margin-top: 2px;
+}
+.template-modern .cv-contact { color: var(--graphite-soft); }
+.template-modern .cv-contact span:not(:last-child)::after { content: "·"; margin-left: 10px; color: #C9C5B8; }
+
+.template-modern .cv-body { display: grid; grid-template-columns: 1fr; gap: calc(16px * var(--cv-gap-scale, 1)); margin-top: calc(18px * var(--cv-gap-scale, 1)); }
+.template-modern .cv-section h3 {
+  color: var(--accent); border-bottom: 1px solid var(--line-paper);
+}
+.template-modern .cv-profile { color: var(--graphite); }
+
+.template-modern .entry-title { color: #14141A; }
+.template-modern .entry-sub { color: var(--graphite-soft); }
+.template-modern .entry-dates { color: var(--graphite-soft); }
+.template-modern .entry-desc { color: var(--graphite); }
+
+.template-modern .skill-chip {
+  background: #F4F1E8; border: 1px solid var(--line-paper);
+  padding: 4px 10px; border-radius: 3px; color: #3A3A3A;
+}
+.template-modern .lang-row .lang-level { color: var(--graphite-soft); }
+.template-modern .empty-hint { color: #B7B2A0; }
+
+/* --- Template Executive : deux colonnes façon revue, sobre, cadres/seniors ---
+   Mise en page radicalement différente de Modern : photo ronde en médaillon
+   centré au-dessus du nom, en niveaux de gris, et corps du CV réparti sur
+   deux colonnes équilibrées (comme une page de rapport annuel). */
+.template-executive {
+  padding: 22mm 20mm;
+  --cv-font-display: Georgia, 'Fraunces', serif; --cv-font-body: var(--font-ui); --cv-font-accent: var(--font-ui);
+}
+.template-executive .cv-head {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding-bottom: 16px; border-bottom: 1px solid #2A2A2A;
+}
+.template-executive .cv-photo {
+  width: 24mm; height: 24mm; margin-bottom: 12px;
+  border: 1px solid #2A2A2A; filter: grayscale(100%) contrast(1.05);
+}
+.template-executive .cv-name {
+  font-size: 26px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: #14141A;
+}
+.template-executive .cv-role {
+  font-size: 12.5px; color: #4A4A4A; margin-top: 4px; letter-spacing: 0.04em;
+}
+.template-executive .cv-contact { justify-content: center; color: #4A4A4A; }
+.template-executive .cv-contact span:not(:last-child)::after { content: "|"; margin-left: 10px; color: #B9B9B9; }
+.template-executive .cv-body {
+  margin-top: calc(22px * var(--cv-gap-scale, 1)); columns: 2; column-gap: 12mm; column-rule: 1px solid #DAD6CC;
+}
+.template-executive .cv-section { margin-bottom: calc(16px * var(--cv-gap-scale, 1)); }
+.template-executive .cv-section h3 {
+  color: #14141A; border-bottom: 1px solid #2A2A2A;
+}
+.template-executive .cv-profile { text-align: left; }
+.template-executive .entry-title { color: #14141A; }
+.template-executive .skill-chip { background: none; border: 1px solid #2A2A2A; border-radius: 0; color: #2A2A2A; }
+.template-executive .entry-dates { font-style: italic; }
+
+/* --- Template Minimal : une seule colonne très aérée, photo discrète en ligne avec le nom --- */
+.template-minimal {
+  padding: 26mm 24mm;
+  --cv-font-display: var(--font-ui); --cv-font-body: var(--font-ui); --cv-font-accent: var(--font-ui);
+}
+.template-minimal .cv-head { display: flex; align-items: center; gap: 14px; padding-bottom: 0; border: none; }
+.template-minimal .cv-photo {
+  width: 17mm; height: 17mm; border: none; filter: grayscale(35%);
+}
+.template-minimal .cv-name { font-size: 27px; font-weight: 500; color: #14141A; letter-spacing: -0.01em; }
+.template-minimal .cv-role { font-size: 12px; color: #6B6B6B; margin-top: 5px; font-weight: 400; }
+.template-minimal .cv-contact { color: #6B6B6B; }
+.template-minimal .cv-contact span:not(:last-child)::after { content: ""; margin-left: 4px; }
+.template-minimal .cv-contact span { margin-right: 12px; }
+.template-minimal .cv-head .cv-contact { margin-top: 6px; }
+.template-minimal .cv-body { margin-top: calc(32px * var(--cv-gap-scale, 1)); display: flex; flex-direction: column; gap: calc(26px * var(--cv-gap-scale, 1)); }
+.template-minimal .cv-section h3 {
+  font-weight: 500; letter-spacing: 0.16em; color: #9A9689; border-bottom: none; padding-bottom: 0;
+}
+.template-minimal .entry { margin-bottom: calc(16px * var(--cv-gap-scale, 1)); }
+.template-minimal .entry-title { color: #14141A; font-weight: 500; }
+.template-minimal .entry-dates { color: #9A9689; }
+.template-minimal .skill-chip { background: none; border: none; padding: 0; margin-right: 14px; color: #4A4A4A; }
+.template-minimal .skills-grid { gap: 0; }
+
+/* --- Template Creative : bandeau colonne, portrait en médaillon "badge" qui
+   chevauche le bandeau coloré — mise en page la plus expressive --- */
+.template-creative {
+  padding: 0; overflow: visible;
+  --cv-font-display: var(--font-ui); --cv-font-body: var(--font-ui); --cv-font-accent: var(--font-ui);
+}
+.template-creative .cv-head {
+  background: var(--accent); color: #fff; padding: 16mm 16mm 22mm; border: none;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.template-creative .cv-photo {
+  width: 32mm; height: 32mm; border: 3px solid #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  margin-bottom: 14px;
+}
+.template-creative .cv-name { color: #fff; font-size: 28px; }
+.template-creative .cv-role { color: rgba(255,255,255,0.85); }
+.template-creative .cv-contact { justify-content: center; color: rgba(255,255,255,0.8); }
+.template-creative .cv-contact span:not(:last-child)::after { color: rgba(255,255,255,0.4); }
+.template-creative .cv-body { padding: 16mm; margin-top: 0; display: grid; gap: calc(16px * var(--cv-gap-scale, 1)); }
+.template-creative .cv-section h3 { color: var(--accent); border-bottom: 2px solid var(--accent); }
+.template-creative .skill-chip { background: var(--accent); color: #fff; border: none; border-radius: 999px; }
+.template-creative .entry-title { color: var(--accent); }
+
+/* --- Template ATS : parsing logiciel, texte pur, une colonne, sans fioriture ---
+   Photo volontairement minuscule et en coin, pour ne jamais gêner la lecture
+   séquentielle du texte par un logiciel de tri de CV. --- */
+.template-ats {
+  padding: 18mm 20mm;
+  --cv-font-display: Arial, Helvetica, sans-serif; --cv-font-body: Arial, Helvetica, sans-serif; --cv-font-accent: Arial, Helvetica, sans-serif;
+}
+.template-ats .cv-head { position: relative; display: block; border-bottom: 1px solid #000; padding-bottom: 10px; padding-right: 24mm; }
+.template-ats .cv-photo {
+  position: absolute; top: 0; right: 0; width: 18mm; height: 18mm;
+  border: 1px solid #000; border-radius: 0;
+}
+.template-ats .cv-name { font-size: 22px; color: #000; font-weight: 700; }
+.template-ats .cv-role { color: #000; font-size: 12px; margin-top: 2px; }
+.template-ats .cv-contact { color: #000; }
+.template-ats .cv-contact span:not(:last-child)::after { content: " | "; color: #000; margin-left: 0; }
+.template-ats .cv-body { margin-top: 16px; display: flex; flex-direction: column; gap: calc(14px * var(--cv-gap-scale, 1)); }
+.template-ats .cv-section h3 {
+  color: #000; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #000;
+}
+.template-ats .cv-profile, .template-ats .entry-desc, .template-ats .entry-sub, .template-ats .entry-title { color: #000; }
+.template-ats .entry-title { font-weight: 700; }
+.template-ats .entry-dates { color: #000; }
+.template-ats .skill-chip { background: none; border: none; padding: 0 10px 0 0; color: #000; border-radius: 0; }
+.template-ats .skills-grid { gap: 0; }
+
+/* =====================================================================
+   DESIGN
+   ===================================================================== */
+.design-block { margin-bottom: 26px; }
+.design-block-title { font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch {
+  width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent;
+  cursor: pointer; position: relative;
+}
+.swatch.is-active { border-color: var(--ink-text); }
+.swatch.is-active::after {
+  content: "✓"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 13px; text-shadow: 0 1px 2px rgba(0,0,0,.5);
+}
+.option-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.option-chip {
+  padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line-navy);
+  background: var(--app-bg-elevated); color: var(--muted); font-size: 13px;
+}
+.option-chip.is-active { border-color: var(--brass); color: var(--brass); background: var(--brass-soft); }
+
+/* =====================================================================
+   EXPORT
+   ===================================================================== */
+.export-options { display: flex; flex-direction: column; gap: 10px; }
+.export-card {
+  display: flex; align-items: center; gap: 14px; text-align: left;
+  background: var(--app-bg-elevated); border: 1px solid var(--line-navy);
+  border-radius: var(--radius-m); padding: 16px;
+}
+.export-card:hover { border-color: var(--brass); }
+.export-card:disabled { opacity: 0.5; cursor: default; pointer-events: none; }
+.export-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-s); background: var(--app-bg-raised);
+  display: flex; align-items: center; justify-content: center; color: var(--brass); font-size: 18px; flex-shrink: 0;
+}
+.export-label { display: block; font-weight: 600; font-size: 14.5px; color: var(--ink-text); }
+.export-hint { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.export-status { margin-top: 16px; font-size: 13px; color: var(--brass); min-height: 18px; }
+.export-status.is-error { color: var(--danger); }
+.export-status.is-success { color: var(--success); }
+
+/* =====================================================================
+   BARRE D'ONGLETS MOBILE
+   ===================================================================== */
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+  display: flex; background: var(--app-bg-elevated); border-top: 1px solid var(--line-navy);
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+}
+.tabbar-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: none; color: var(--muted); font-size: 10.5px; padding: 6px 0; border-radius: 8px;
+}
+.tabbar-btn.is-active { color: var(--brass); }
+.tabbar-icon { font-size: 18px; }
+
+/* =====================================================================
+   RESPONSIVE — DESKTOP
+   ===================================================================== */
+@media (min-width: 1024px) {
+  .home-hero { padding: 90px 60px 30px; }
+  .home-title { font-size: 60px; }
+  .home-topbar { padding: 24px 60px; }
+  .home-templates { padding: 50px 60px 80px; }
+
+  .screen-editor {
+    display: grid; grid-template-columns: 460px 1fr; padding-bottom: 0; min-height: 100svh;
+  }
+  .editor-topbar { grid-column: 1 / -1; padding: 16px 28px; }
+
+  .tabbar {
+    position: static; flex-direction: row; width: fit-content; border: 1px solid var(--line-navy);
+    border-radius: 10px; padding: 4px; margin: 20px 28px 0; background: var(--app-bg-elevated);
+  }
+  .tabbar-btn { flex-direction: row; gap: 6px; padding: 8px 14px; border-radius: 7px; }
+  .tabbar-btn.is-active { background: var(--app-bg-raised); }
+
+  .pane { grid-column: 1; padding: 8px 28px 28px; overflow-y: auto; max-height: calc(100svh - 130px); }
+  .pane[data-pane="preview"] {
+    grid-column: 2; grid-row: 2; display: flex !important; flex-direction: column; max-height: none;
+    align-items: stretch; justify-content: flex-start; background: var(--app-bg-elevated);
+    border-left: 1px solid var(--line-navy); padding: 40px;
+  }
+  .step-nav { position: static; background: none; padding: 26px 0 0; }
+  .preview-viewport { height: calc(100svh - 200px); background: transparent; }
+  .paper-stage { padding: 0; }
+  .cv-sheet { --sheet-scale: 0.62; }
+  .preview-toolbar { display: none; }
+  .zoom-controls { justify-content: flex-start; }
+}
+
+/* =====================================================================
+   IMPRESSION
+   ===================================================================== */
+@media print {
+  body * { visibility: hidden; }
+  .cv-sheet, .cv-sheet * { visibility: visible; }
+  .cv-sheet {
+    position: absolute; top: 0; left: 0; box-shadow: none;
+    transform: none; margin: 0; width: 210mm; min-height: 297mm;
+  }
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============================================================
+       ÉCRAN ACCUEIL
+       ============================================================ -->
+  <section id="screen-home" class="screen screen-home is-active">
+
+    <header class="home-topbar">
+      <div class="home-logo">
+        <span class="logo-mark">CV</span>
+        <span class="logo-word">CV-Pro</span>
+      </div>
+      <button class="btn btn-ghost" id="resumeBtn" hidden>Reprendre mon CV</button>
+    </header>
+
+    <div class="home-hero">
+      <p class="eyebrow">Générateur de CV — gratuit</p>
+      <h1 class="home-title">Créez un CV qui<br>ouvre des portes.</h1>
+      <p class="home-sub">Renseignez vos informations, choisissez un modèle, exportez un document prêt pour n'importe quelle candidature — cabinet, startup, administration ou international.</p>
+      <div class="home-cta">
+        <button class="btn btn-primary btn-lg" id="startBtn">Créer mon CV</button>
+        <button class="btn btn-outline btn-lg" id="seeTemplatesBtn">Voir les modèles</button>
+      </div>
+    </div>
+
+    <div class="home-templates" id="homeTemplates">
+      <p class="section-label">Modèles disponibles</p>
+      <div class="template-strip">
+        <div class="template-card is-ready" data-template="modern">
+          <div class="template-thumb thumb-modern"></div>
+          <span>Modern</span>
+        </div>
+        <div class="template-card is-ready" data-template="executive">
+          <div class="template-thumb thumb-executive"></div>
+          <span>Executive</span>
+        </div>
+        <div class="template-card is-ready" data-template="minimal">
+          <div class="template-thumb thumb-minimal"></div>
+          <span>Minimal</span>
+        </div>
+        <div class="template-card is-ready" data-template="creative">
+          <div class="template-thumb thumb-creative"></div>
+          <span>Creative</span>
+        </div>
+        <div class="template-card is-ready" data-template="ats">
+          <div class="template-thumb thumb-ats"></div>
+          <span>ATS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       ÉCRAN ÉDITEUR
+       ============================================================ -->
+  <section id="screen-editor" class="screen screen-editor">
+
+    <header class="editor-topbar">
+      <button class="icon-btn" id="backHomeBtn" aria-label="Retour à l'accueil">←</button>
+      <div class="save-indicator" id="saveIndicator">
+        <span class="save-dot"></span>
+        <span id="saveIndicatorText">Sauvegardé</span>
+      </div>
+      <button class="icon-btn" id="resetBtn" aria-label="Réinitialiser">↺</button>
+    </header>
+
+    <!-- PANNEAU ÉDITER -->
+    <div class="pane" id="pane-edit" data-pane="edit">
+
+      <div class="dossier-tabs" id="stepTabs"></div>
+      <div class="step-progress-track"><div class="step-progress-bar" id="stepProgressBar"></div></div>
+
+      <div class="step-header">
+        <p class="step-count" id="stepCount">ÉTAPE 01 / 08</p>
+        <h2 class="step-title" id="stepTitle">Informations personnelles</h2>
+      </div>
+
+      <form class="step-body" id="stepBody" autocomplete="off"></form>
+
+      <div class="step-nav">
+        <button class="btn btn-outline" id="prevStepBtn">Précédent</button>
+        <button class="btn btn-primary" id="nextStepBtn">Suivant</button>
+      </div>
+    </div>
+
+    <!-- PANNEAU APERÇU -->
+    <div class="pane" id="pane-preview" data-pane="preview">
+      <div class="preview-toolbar">
+        <p class="section-label">Aperçu</p>
+        <span class="page-indicator" id="pageIndicator">Page 1</span>
+      </div>
+      <div class="preview-viewport" id="previewViewport">
+        <div class="paper-stage" id="paperStage">
+          <article id="cvSheet" class="cv-sheet template-modern"></article>
+        </div>
+      </div>
+      <div class="zoom-controls">
+        <button type="button" class="zoom-btn" id="zoomOutBtn" aria-label="Zoom arrière">−</button>
+        <button type="button" class="zoom-btn zoom-reset" id="zoomResetBtn" aria-label="Réinitialiser le zoom">100%</button>
+        <button type="button" class="zoom-btn" id="zoomInBtn" aria-label="Zoom avant">+</button>
+      </div>
+    </div>
+
+    <!-- PANNEAU DESIGN -->
+    <div class="pane" id="pane-design" data-pane="design">
+      <p class="section-label">Personnalisation</p>
+
+      <div class="design-block">
+        <p class="design-block-title">Modèle</p>
+        <div class="option-row" id="templateOptions">
+          <button class="option-chip" data-template="modern">Modern</button>
+          <button class="option-chip" data-template="executive">Executive</button>
+          <button class="option-chip" data-template="minimal">Minimal</button>
+          <button class="option-chip" data-template="creative">Creative</button>
+          <button class="option-chip" data-template="ats">ATS</button>
+        </div>
+      </div>
+
+      <div class="design-block">
+        <p class="design-block-title">Couleur d'accent</p>
+        <div class="swatch-row" id="colorSwatches"></div>
+      </div>
+
+      <div class="design-block">
+        <p class="design-block-title">Typographie</p>
+        <div class="option-row" id="fontOptions">
+          <button class="option-chip is-active" data-font="moderne">Moderne</button>
+          <button class="option-chip" data-font="elegante">Élégante</button>
+          <button class="option-chip" data-font="classique">Classique</button>
+          <button class="option-chip" data-font="technique">Technique</button>
+        </div>
+      </div>
+
+      <div class="design-block">
+        <p class="design-block-title">Photo</p>
+        <div class="option-row" id="photoOptions">
+          <button class="option-chip is-active" data-photo="ronde">Ronde</button>
+          <button class="option-chip" data-photo="carree">Carrée</button>
+          <button class="option-chip" data-photo="aucune">Sans photo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANNEAU EXPORT -->
+    <div class="pane" id="pane-export" data-pane="export">
+      <p class="section-label">Exporter</p>
+
+      <div class="export-options">
+        <button class="export-card" id="exportPdfBtn">
+          <span class="export-icon">▤</span>
+          <span class="export-label">Exporter en PDF</span>
+          <span class="export-hint">Format A4, prêt à envoyer</span>
+        </button>
+        <button class="export-card" id="exportPngBtn">
+          <span class="export-icon">▨</span>
+          <span class="export-label">Exporter en image (PNG)</span>
+          <span class="export-hint">Pour partager en ligne</span>
+        </button>
+        <button class="export-card" id="printBtn">
+          <span class="export-icon">▥</span>
+          <span class="export-label">Imprimer</span>
+          <span class="export-hint">Impression directe</span>
+        </button>
+      </div>
+
+      <p class="export-status" id="exportStatus" aria-live="polite"></p>
+    </div>
+
+    <!-- BARRE D'ONGLETS MOBILE -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tabbar-btn is-active" data-pane="edit">
+        <span class="tabbar-icon">✎</span><span>Éditer</span>
+      </button>
+      <button class="tabbar-btn" data-pane="preview">
+        <span class="tabbar-icon">◧</span><span>Aperçu</span>
+      </button>
+      <button class="tabbar-btn" data-pane="design">
+        <span class="tabbar-icon">◆</span><span>Design</span>
+      </button>
+      <button class="tabbar-btn" data-pane="export">
+        <span class="tabbar-icon">↥</span><span>Export</span>
+      </button>
+    </nav>
+
+  </section>
+
+</div>
+
+<input type="file" id="photoFileInput" accept="image/png,image/jpeg,image/webp" hidden>
+
+<script defer>
+(() => {
+"use strict";
+
+/* =====================================================================
+   ÉTAT
+   ===================================================================== */
+const STORAGE_KEY = "cvpro:v2";
+let uidCounter = 1;
+const uid = () => "id" + (uidCounter++);
+
+const OPTIONAL_SECTIONS = [
+  { key: "certifications", label: "Certifications", ph: "Certification professionnelle" },
+  { key: "recompenses", label: "Récompenses", ph: "Employé(e) du mois — Mai 2024" },
+  { key: "benevolat", label: "Bénévolat", ph: "Bénévole — Croix-Rouge" },
+  { key: "interets", label: "Centres d'intérêt", ph: "Lecture, sport, photographie" },
+  { key: "references", label: "Références", ph: "Disponibles sur demande" },
+  { key: "publications", label: "Publications", ph: "Article — Revue XYZ" },
+  { key: "associations", label: "Associations", ph: "Membre — Association ABC" },
+  { key: "permis", label: "Permis", ph: "Permis B" },
+  { key: "reseaux", label: "Réseaux sociaux", ph: "@monpseudo" }
+];
+
+const SEXE_OPTIONS = ["Homme", "Femme"];
+
+const defaultState = () => ({
+  personal: {
+    photo: "", prenom: "", nom: "", titre: "",
+    sexe: "", dateNaissance: "", nationalite: "",
+    adresse: "", codePostal: "", ville: "", pays: "",
+    email: "", tel: "", siteweb: "", linkedin: ""
+  },
+  profile: "",
+  experiences: [],
+  education: [],
+  skills: [],
+  languages: [],
+  projects: [],
+  optional: { enabled: [], sections: Object.fromEntries(OPTIONAL_SECTIONS.map(s => [s.key, []])) },
+  settings: { template: "modern", color: "#C6A15B", font: "moderne", photoShape: "ronde" }
+});
+
+let state = defaultState();
+let currentStep = 0;
+let saveTimer = null;
+const visitedSteps = new Set([0]);
+
+/* =====================================================================
+   DÉFINITION DES ÉTAPES
+   ===================================================================== */
+const STEPS = [
+  { id: "personal",   label: "Infos" },
+  { id: "profile",    label: "Profil" },
+  { id: "experience", label: "Expérience" },
+  { id: "education",  label: "Formation" },
+  { id: "skills",     label: "Compétences" },
+  { id: "languages",  label: "Langues" },
+  { id: "projects",   label: "Projets" },
+  { id: "optional",   label: "Plus" }
+];
+const STEP_TITLES = {
+  personal: "Informations personnelles",
+  profile: "Profil professionnel",
+  experience: "Expérience professionnelle",
+  education: "Formation",
+  skills: "Compétences",
+  languages: "Langues",
+  projects: "Projets",
+  optional: "Sections supplémentaires"
+};
+
+const COLORS = ["#C6A15B", "#3B5D8A", "#4E9668", "#8B5A9E", "#B23A2E", "#2B2B2B"];
+
+/* =====================================================================
+   PERSISTANCE
+   ===================================================================== */
+function scheduleSave() {
+  const indicator = document.getElementById("saveIndicator");
+  const text = document.getElementById("saveIndicatorText");
+  indicator.classList.add("is-saving");
+  text.textContent = "Sauvegarde...";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      indicator.classList.remove("is-saving");
+      text.textContent = "Sauvegardé";
+    } catch (e) {
+      text.textContent = "Erreur de sauvegarde";
+    }
+  }, 500);
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      const base = defaultState();
+      state = Object.assign(base, parsed);
+      state.personal = Object.assign(base.personal, parsed.personal || {});
+      state.settings = Object.assign(base.settings, parsed.settings || {});
+      state.optional = {
+        enabled: Array.isArray(parsed.optional?.enabled) ? parsed.optional.enabled : [],
+        sections: Object.assign(base.optional.sections, parsed.optional?.sections || {})
+      };
+      return true;
+    }
+  } catch (e) { /* ignore corrupt data */ }
+  return false;
+}
+
+/* =====================================================================
+   NAVIGATION ENTRE ÉCRANS (accueil / éditeur)
+   ===================================================================== */
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("is-active", s.id === id));
+}
+
+function showPane(paneId) {
+  document.querySelectorAll(".pane").forEach(p => p.classList.toggle("is-active", p.dataset.pane === paneId));
+  document.querySelectorAll(".tabbar-btn").forEach(b => b.classList.toggle("is-active", b.dataset.pane === paneId));
+}
+
+/* =====================================================================
+   RENDU — ÉTAPE COURANTE (formulaire)
+   ===================================================================== */
+function field({ id, label, type = "text", value = "", placeholder = "", help = "" }) {
+  const tag = type === "textarea" ? "textarea" : "input";
+  const attrs = type === "textarea" ? `rows="4"` : `type="${type}" value="${escapeAttr(value)}"`;
+  return `
+    <div class="field">
+      <label for="${id}">${label}</label>
+      <${tag} id="${id}" ${attrs} placeholder="${escapeAttr(placeholder)}">${type === "textarea" ? escapeHtml(value) : ""}</${tag}>
+      ${help ? `<span class="field-help">${help}</span>` : ""}
+    </div>`;
+}
+
+function selectField({ id, label, value = "", options = [], placeholder = "Non précisé", help = "" }) {
+  return `
+    <div class="field">
+      <label for="${id}">${label}</label>
+      <select id="${id}">
+        <option value="" ${value ? "" : "selected"}>${escapeHtml(placeholder)}</option>
+        ${options.map(o => `<option value="${escapeAttr(o)}" ${value === o ? "selected" : ""}>${escapeHtml(o)}</option>`).join("")}
+      </select>
+      ${help ? `<span class="field-help">${help}</span>` : ""}
+    </div>`;
+}
+
+function renderStep() {
+  visitedSteps.add(currentStep);
+  const step = STEPS[currentStep];
+  document.getElementById("stepCount").textContent = `ÉTAPE ${String(currentStep + 1).padStart(2, "0")} / ${STEPS.length}`;
+  document.getElementById("stepTitle").textContent = STEP_TITLES[step.id];
+  document.getElementById("prevStepBtn").style.visibility = currentStep === 0 ? "hidden" : "visible";
+  document.getElementById("nextStepBtn").textContent = currentStep === STEPS.length - 1 ? "Terminer" : "Suivant";
+
+  const body = document.getElementById("stepBody");
+  body.innerHTML = renderers[step.id]();
+  bindStepEvents(step.id);
+  renderDossierTabs();
+  updateStepProgress();
+
+  // On passe réellement à la page suivante : on ne laisse jamais l'utilisateur
+  // au milieu du contenu précédent, ni le bouton "Suivant" hors champ de vue.
+  body.classList.remove("step-anim");
+  void body.offsetWidth; // relance l'animation
+  body.classList.add("step-anim");
+  const pane = document.getElementById("pane-edit");
+  if (pane) pane.scrollTop = 0;
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+}
+
+function updateStepProgress() {
+  const bar = document.getElementById("stepProgressBar");
+  if (!bar) return;
+  const pct = Math.round(((currentStep + 1) / STEPS.length) * 100);
+  bar.style.width = pct + "%";
+}
+
+function renderDossierTabs() {
+  const wrap = document.getElementById("stepTabs");
+  wrap.innerHTML = STEPS.map((s, i) => `
+    <button type="button" class="dossier-tab ${i === currentStep ? "is-active" : ""} ${visitedSteps.has(i) && i !== currentStep ? "is-done" : ""}" data-index="${i}">
+      ${s.label}
+    </button>`).join("");
+  wrap.querySelectorAll(".dossier-tab").forEach(btn => {
+    btn.addEventListener("click", () => { currentStep = Number(btn.dataset.index); renderStep(); });
+  });
+  wrap.querySelector(".dossier-tab.is-active")?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+}
+
+/* --- Rendus par étape --- */
+const renderers = {
+  personal: () => {
+    const p = state.personal;
+    return `
+      <div class="field">
+        <label>Photo de profil</label>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <img id="photoPreviewThumb" src="${p.photo || ""}" alt="" style="width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--app-bg-raised);${p.photo ? "" : "display:none;"}">
+          <button type="button" class="btn btn-outline" id="choosePhotoBtn">Choisir un fichier</button>
+          ${p.photo ? `<button type="button" class="btn btn-ghost" id="removePhotoBtn">Retirer</button>` : ""}
+        </div>
+        <span class="field-help">JPG, PNG ou WebP — facultatif.</span>
+      </div>
+      ${field({ id: "f_prenom", label: "Prénom", value: p.prenom, placeholder: "Jean" })}
+      ${field({ id: "f_nom", label: "Nom", value: p.nom, placeholder: "Dupont" })}
+      ${field({ id: "f_titre", label: "Titre professionnel", value: p.titre, placeholder: "Ex : Comptable, Enseignant, Chargé de projet..." })}
+
+      <p class="field-group-title">Identité</p>
+      <div class="field-row">
+        ${selectField({ id: "f_sexe", label: "Sexe", value: p.sexe, options: SEXE_OPTIONS })}
+        ${field({ id: "f_dateNaissance", label: "Date de naissance", type: "date", value: p.dateNaissance })}
+      </div>
+      ${field({ id: "f_nationalite", label: "Nationalité", value: p.nationalite, placeholder: "Congolaise" })}
+
+      <p class="field-group-title">Contact</p>
+      <div class="field-row">
+        ${field({ id: "f_email", label: "Email", type: "email", value: p.email, placeholder: "jean@email.com" })}
+        ${field({ id: "f_tel", label: "Téléphone", type: "tel", value: p.tel, placeholder: "+243 ..." })}
+      </div>
+
+      <p class="field-group-title">Adresse complète</p>
+      ${field({ id: "f_adresse", label: "Adresse (rue, quartier, numéro)", value: p.adresse, placeholder: "12 Avenue de la Paix" })}
+      <div class="field-row">
+        ${field({ id: "f_codePostal", label: "Code postal", value: p.codePostal, placeholder: "00000" })}
+        ${field({ id: "f_ville", label: "Ville", value: p.ville, placeholder: "Kinshasa" })}
+      </div>
+      ${field({ id: "f_pays", label: "Pays", value: p.pays, placeholder: "RD Congo" })}
+
+      <p class="field-group-title">Présence en ligne <span class="field-group-optional">(facultatif)</span></p>
+      <div class="field-row">
+        ${field({ id: "f_siteweb", label: "Site web", value: p.siteweb, placeholder: "monsite.com" })}
+        ${field({ id: "f_linkedin", label: "LinkedIn", value: p.linkedin, placeholder: "linkedin.com/in/..." })}
+      </div>
+    `;
+  },
+
+  profile: () => `
+    <div class="field">
+      <label for="f_profile">Présentation</label>
+      <textarea id="f_profile" rows="8" maxlength="600" placeholder="Présentez votre expérience, vos compétences clés et votre objectif en quelques lignes.">${state.profile}</textarea>
+      <span class="field-help"><span id="profileCount">0</span>/600 caractères</span>
+    </div>`,
+
+  experience: () => renderEntryList("experiences", state.experiences, [
+    { key: "poste", label: "Poste", ph: "Ex : Comptable, Enseignant, Responsable des ventes" },
+    { key: "entreprise", label: "Entreprise / Organisation", ph: "Nom de l'entreprise" },
+    { key: "lieu", label: "Lieu", ph: "Kinshasa" },
+  ], true, "Décrivez vos missions et réalisations...", "＋ Ajouter une expérience"),
+
+  education: () => renderEntryList("education", state.education, [
+    { key: "diplome", label: "Diplôme", ph: "Ex : Licence en Gestion, Baccalauréat" },
+    { key: "etablissement", label: "Établissement", ph: "Nom de l'établissement" },
+    { key: "lieu", label: "Lieu", ph: "Kinshasa" },
+  ], true, "Détails, spécialisation, mentions...", "＋ Ajouter une formation"),
+
+  skills: () => `
+    <div class="field">
+      <label for="f_skillInput">Ajouter une compétence</label>
+      <input id="f_skillInput" placeholder="Ex : Gestion de projet — puis Entrée">
+    </div>
+    <div class="tag-list" id="skillsTagList">
+      ${state.skills.map(s => `<span class="tag-pill">${escapeHtml(s.nom)}<button type="button" data-remove="${s.id}">✕</button></span>`).join("") || `<span class="field-help">Aucune compétence ajoutée pour l'instant.</span>`}
+    </div>`,
+
+  languages: () => `
+    <div id="langList" style="display:flex;flex-direction:column;gap:10px;">
+      ${state.languages.map(l => `
+        <div class="entry-card">
+          <div class="field-row">
+            <div class="field"><label>Langue</label><input data-lang-field="nom" data-id="${l.id}" value="${escapeAttr(l.nom)}" placeholder="Français"></div>
+            <div class="field">
+              <label>Niveau</label>
+              <select data-lang-field="niveau" data-id="${l.id}">
+                ${["Notions", "Intermédiaire", "Courant", "Langue maternelle"].map(n => `<option ${l.niveau === n ? "selected" : ""}>${n}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          <button type="button" class="add-entry-btn" data-remove-lang="${l.id}">Supprimer cette langue</button>
+        </div>`).join("")}
+    </div>
+    <button type="button" class="add-entry-btn" id="addLangBtn">＋ Ajouter une langue</button>`,
+
+  projects: () => `
+    <div id="projList" style="display:flex;flex-direction:column;gap:14px;">
+      ${state.projects.map(p => `
+        <div class="entry-card">
+          <div class="entry-card-head">
+            <span class="entry-card-title">${escapeHtml(p.nom) || "Nouveau projet"}</span>
+            <div class="entry-card-actions"><button type="button" data-remove-proj="${p.id}">🗑️</button></div>
+          </div>
+          ${field({ id: `pj_nom_${p.id}`, label: "Nom du projet", value: p.nom, placeholder: "Ex : Réorganisation du service comptable" })}
+          ${field({ id: `pj_role_${p.id}`, label: "Rôle", value: p.role, placeholder: "Responsable du projet" })}
+          ${field({ id: `pj_tech_${p.id}`, label: "Compétences ou outils mobilisés (séparés par des virgules)", value: p.technologies, placeholder: "Gestion de projet, Excel, Communication" })}
+          ${field({ id: `pj_lien_${p.id}`, label: "Lien ou référence (optionnel)", value: p.lien, placeholder: "Site, publication, dossier..." })}
+          ${field({ id: `pj_desc_${p.id}`, label: "Description", type: "textarea", value: p.description, placeholder: "Décrivez le contexte, vos actions et les résultats obtenus..." })}
+        </div>`).join("")}
+    </div>
+    <button type="button" class="add-entry-btn" id="addProjBtn">＋ Ajouter un projet</button>`,
+
+  optional: () => `
+    <p class="field-help" style="margin-bottom:14px;">Activez seulement les sections pertinentes pour votre profil.</p>
+    <div class="optional-sections-grid">
+      ${OPTIONAL_SECTIONS.map(s => `
+        <button type="button" class="optional-toggle ${state.optional.enabled.includes(s.key) ? "is-active" : ""}" data-toggle="${s.key}">
+          ${state.optional.enabled.includes(s.key) ? "✓ " : ""}${s.label}
+        </button>`).join("")}
+    </div>
+    ${state.optional.enabled.map(key => {
+      const conf = OPTIONAL_SECTIONS.find(s => s.key === key);
+      const items = state.optional.sections[key];
+      return `
+        <div class="entry-card" style="margin-top:16px;">
+          <p class="entry-card-title">${conf.label}</p>
+          <div class="tag-list" id="opt-list-${key}">
+            ${items.map(it => `<span class="tag-pill">${escapeHtml(it.nom)}<button type="button" data-remove-opt="${key}:${it.id}">✕</button></span>`).join("") || `<span class="field-help">Rien pour l'instant.</span>`}
+          </div>
+          <input class="opt-input" data-opt-input="${key}" placeholder="${conf.ph} — puis Entrée" style="margin-top:10px;background:var(--app-bg-raised);border:1px solid var(--line-navy);border-radius:var(--radius-s);padding:10px 12px;color:var(--ink-text);font-size:14px;width:100%;">
+        </div>`;
+    }).join("")}
+  `
+};
+
+function renderEntryList(stateKey, list, textFields, hasDates, descPlaceholder, addLabel) {
+  return `
+    <div id="list-${stateKey}" style="display:flex;flex-direction:column;gap:14px;">
+      ${list.map(item => `
+        <div class="entry-card">
+          <div class="entry-card-head">
+            <span class="entry-card-title">${escapeHtml(item[textFields[0].key]) || "Sans titre"}</span>
+            <div class="entry-card-actions"><button type="button" data-remove-entry="${item.id}" data-list="${stateKey}">🗑️</button></div>
+          </div>
+          ${textFields.map(tf => field({ id: `e_${item.id}_${tf.key}`, label: tf.label, value: item[tf.key], placeholder: tf.ph })).join("")}
+          ${hasDates ? `
+            <div class="field-row">
+              ${field({ id: `e_${item.id}_dateDebut`, label: "Date de début", value: item.dateDebut, placeholder: "01/2022" })}
+              ${field({ id: `e_${item.id}_dateFin`, label: "Date de fin", value: item.dateFin, placeholder: "Aujourd'hui" })}
+            </div>
+            <div class="field-check">
+              <input type="checkbox" id="e_${item.id}_encours" ${item.enCours ? "checked" : ""}>
+              <label for="e_${item.id}_encours">Poste / formation actuel(le)</label>
+            </div>` : ""}
+          ${field({ id: `e_${item.id}_description`, label: "Description", type: "textarea", value: item.description, placeholder: descPlaceholder })}
+        </div>`).join("")}
+    </div>
+    <button type="button" class="add-entry-btn" id="add-${stateKey}">${addLabel}</button>`;
+}
+
+/* =====================================================================
+   LIAISON DES ÉVÉNEMENTS PAR ÉTAPE
+   ===================================================================== */
+function bindStepEvents(stepId) {
+  if (stepId === "personal") {
+    bindField("f_prenom", v => state.personal.prenom = v);
+    bindField("f_nom", v => state.personal.nom = v);
+    bindField("f_titre", v => state.personal.titre = v);
+    bindField("f_sexe", v => state.personal.sexe = v);
+    bindField("f_dateNaissance", v => state.personal.dateNaissance = v);
+    bindField("f_nationalite", v => state.personal.nationalite = v);
+    bindField("f_email", v => state.personal.email = v);
+    bindField("f_tel", v => state.personal.tel = v);
+    bindField("f_adresse", v => state.personal.adresse = v);
+    bindField("f_codePostal", v => state.personal.codePostal = v);
+    bindField("f_ville", v => state.personal.ville = v);
+    bindField("f_pays", v => state.personal.pays = v);
+    bindField("f_siteweb", v => state.personal.siteweb = v);
+    bindField("f_linkedin", v => state.personal.linkedin = v);
+
+    document.getElementById("choosePhotoBtn")?.addEventListener("click", () => document.getElementById("photoFileInput").click());
+    document.getElementById("removePhotoBtn")?.addEventListener("click", () => {
+      state.personal.photo = ""; renderStep(); renderPreview(); scheduleSave();
+    });
+  }
+
+  if (stepId === "profile") {
+    const ta = document.getElementById("f_profile");
+    const counter = document.getElementById("profileCount");
+    counter.textContent = ta.value.length;
+    ta.addEventListener("input", () => {
+      state.profile = ta.value;
+      counter.textContent = ta.value.length;
+      renderPreview(); scheduleSave();
+    });
+  }
+
+  if (stepId === "experience" || stepId === "education") {
+    bindEntryList(stepId);
+  }
+
+  if (stepId === "skills") {
+    const input = document.getElementById("f_skillInput");
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const v = input.value.trim();
+        if (v) { state.skills.push({ id: uid(), nom: v }); input.value = ""; renderStep(); renderPreview(); scheduleSave(); }
+      }
+    });
+    document.querySelectorAll("#skillsTagList [data-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.skills = state.skills.filter(s => s.id !== btn.dataset.remove);
+        renderStep(); renderPreview(); scheduleSave();
+      });
+    });
+  }
+
+  if (stepId === "languages") {
+    document.getElementById("addLangBtn").addEventListener("click", () => {
+      state.languages.push({ id: uid(), nom: "", niveau: "Courant" });
+      renderStep(); renderPreview(); scheduleSave();
+    });
+    document.querySelectorAll("[data-lang-field]").forEach(el => {
+      el.addEventListener("input", () => {
+        const item = state.languages.find(l => l.id === el.dataset.id);
+        item[el.dataset.langField] = el.value;
+        renderPreview(); scheduleSave();
+      });
+      el.addEventListener("change", () => {
+        const item = state.languages.find(l => l.id === el.dataset.id);
+        item[el.dataset.langField] = el.value;
+        renderPreview(); scheduleSave();
+      });
+    });
+    document.querySelectorAll("[data-remove-lang]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.languages = state.languages.filter(l => l.id !== btn.dataset.removeLang);
+        renderStep(); renderPreview(); scheduleSave();
+      });
+    });
+  }
+
+  if (stepId === "projects") {
+    document.getElementById("addProjBtn").addEventListener("click", () => {
+      state.projects.push({ id: uid(), nom: "", role: "", technologies: "", lien: "", description: "" });
+      renderStep(); renderPreview(); scheduleSave();
+    });
+    state.projects.forEach(p => {
+      ["nom", "role", "technologies", "lien", "description"].forEach(k => {
+        const el = document.getElementById(`pj_${k === "technologies" ? "tech" : k === "description" ? "desc" : k}_${p.id}`);
+        el?.addEventListener("input", () => { p[k] = el.value; renderPreview(); scheduleSave(); if (k === "nom") updateCardTitle(p.id, el.value); });
+      });
+    });
+    document.querySelectorAll("[data-remove-proj]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.projects = state.projects.filter(p => p.id !== btn.dataset.removeProj);
+        renderStep(); renderPreview(); scheduleSave();
+      });
+    });
+  }
+
+  if (stepId === "optional") {
+    document.querySelectorAll("[data-toggle]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.toggle;
+        const idx = state.optional.enabled.indexOf(key);
+        if (idx === -1) state.optional.enabled.push(key); else state.optional.enabled.splice(idx, 1);
+        renderStep(); renderPreview(); scheduleSave();
+      });
+    });
+    document.querySelectorAll("[data-opt-input]").forEach(input => {
+      input.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const v = input.value.trim();
+          const key = input.dataset.optInput;
+          if (v) { state.optional.sections[key].push({ id: uid(), nom: v }); renderStep(); renderPreview(); scheduleSave(); }
+        }
+      });
+    });
+    document.querySelectorAll("[data-remove-opt]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const [key, id] = btn.dataset.removeOpt.split(":");
+        state.optional.sections[key] = state.optional.sections[key].filter(it => it.id !== id);
+        renderStep(); renderPreview(); scheduleSave();
+      });
+    });
+  }
+}
+
+function updateCardTitle(id, value) {
+  // léger raccourci visuel : pas de re-render complet pour ne pas perdre le focus
+}
+
+// Les étapes du formulaire ("experience") n'ont pas toujours le même nom que
+// la clé de données correspondante dans l'état ("experiences" au pluriel).
+// Cette table de correspondance évite tout désalignement entre les deux.
+const ENTRY_STATE_KEY = { experience: "experiences", education: "education" };
+
+function bindEntryList(stepId) {
+  const stateKey = ENTRY_STATE_KEY[stepId] || stepId;
+  const list = state[stateKey];
+  document.getElementById(`add-${stateKey}`).addEventListener("click", () => {
+    const base = { id: uid(), lieu: "", dateDebut: "", dateFin: "", enCours: false, description: "" };
+    if (stepId === "experience") Object.assign(base, { poste: "", entreprise: "" });
+    else Object.assign(base, { diplome: "", etablissement: "" });
+    list.push(base);
+    renderStep(); renderPreview(); scheduleSave();
+  });
+  document.querySelectorAll(`[data-remove-entry][data-list="${stateKey}"]`).forEach(btn => {
+    btn.addEventListener("click", () => {
+      state[stateKey] = state[stateKey].filter(e => e.id !== btn.dataset.removeEntry);
+      renderStep(); renderPreview(); scheduleSave();
+    });
+  });
+  list.forEach(item => {
+    Object.keys(item).forEach(key => {
+      if (key === "id" || key === "enCours") return;
+      const el = document.getElementById(`e_${item.id}_${key}`);
+      el?.addEventListener("input", () => { item[key] = el.value; renderPreview(); scheduleSave(); });
+    });
+    const chk = document.getElementById(`e_${item.id}_encours`);
+    chk?.addEventListener("change", () => { item.enCours = chk.checked; renderPreview(); scheduleSave(); });
+  });
+}
+
+function bindField(id, setter) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const evt = el.tagName === "SELECT" ? "change" : "input";
+  el.addEventListener(evt, () => { setter(el.value); renderPreview(); scheduleSave(); });
+}
+
+/* =====================================================================
+   RENDU DE LA FEUILLE CV
+   ===================================================================== */
+function renderPreview() {
+  const sheet = document.getElementById("cvSheet");
+  sheet.className = `cv-sheet template-${state.settings.template}`;
+  sheet.dataset.font = state.settings.font;
+  const p = state.personal;
+  const fullName = `${p.prenom} ${p.nom}`.trim() || "Votre nom";
+
+  const atsMode = state.settings.template === "ats";
+  const photoBlock = (!atsMode && state.settings.photoShape !== "aucune")
+    ? `<img class="cv-photo shape-${state.settings.photoShape}" src="${p.photo || placeholderAvatar()}" alt="">`
+    : "";
+
+  const contactBits = [
+    p.email && `<span>${escapeHtml(p.email)}</span>`,
+    p.tel && `<span>${escapeHtml(p.tel)}</span>`,
+    composeAdresse(p) && `<span>${escapeHtml(composeAdresse(p))}</span>`,
+    p.dateNaissance && `<span>Né(e) le ${escapeHtml(formatDateNaissance(p.dateNaissance))}</span>`,
+    p.sexe && `<span>${escapeHtml(p.sexe)}</span>`,
+    p.nationalite && `<span>${escapeHtml(p.nationalite)}</span>`,
+    p.siteweb && `<span>${escapeHtml(p.siteweb)}</span>`,
+    p.linkedin && `<span>${escapeHtml(p.linkedin)}</span>`
+  ].filter(Boolean).join("");
+
+  const experienceHtml = renderEntriesForSheet(state.experiences, e => ({
+    title: e.poste || "Poste", sub: e.entreprise || "", right: dateRange(e)
+  }));
+  const educationHtml = renderEntriesForSheet(state.education, e => ({
+    title: e.diplome || "Diplôme", sub: e.etablissement || "", right: dateRange(e)
+  }));
+
+  const skillsHtml = state.skills.length
+    ? `<div class="skills-grid">${state.skills.map(s => `<span class="skill-chip">${escapeHtml(s.nom)}</span>`).join("")}</div>`
+    : `<p class="empty-hint">Ajoutez vos compétences pour qu'elles apparaissent ici.</p>`;
+
+  const langHtml = state.languages.length
+    ? state.languages.map(l => `<div class="lang-row"><span>${escapeHtml(l.nom) || "Langue"}</span><span class="lang-level">${escapeHtml(l.niveau)}</span></div>`).join("")
+    : "";
+
+  const projectsHtml = state.projects.length
+    ? state.projects.map(pr => `
+        <div class="entry">
+          <div class="entry-top"><span class="entry-title">${escapeHtml(pr.nom) || "Projet"}</span></div>
+          ${pr.role ? `<div class="entry-sub">${escapeHtml(pr.role)}</div>` : ""}
+          ${pr.description ? `<div class="entry-desc">${escapeHtml(pr.description)}</div>` : ""}
+          ${pr.technologies ? `<div class="skills-grid" style="margin-top:5px;">${pr.technologies.split(",").map(t => t.trim()).filter(Boolean).map(t => `<span class="skill-chip">${escapeHtml(t)}</span>`).join("")}</div>` : ""}
+        </div>`).join("")
+    : "";
+
+  const optionalHtml = state.optional.enabled.map(key => {
+    const items = state.optional.sections[key].filter(it => it.nom);
+    if (!items.length) return "";
+    const conf = OPTIONAL_SECTIONS.find(s => s.key === key);
+    return section(conf.label, `<div class="skills-grid">${items.map(it => `<span class="skill-chip">${escapeHtml(it.nom)}</span>`).join("")}</div>`);
+  }).join("");
+
+  sheet.innerHTML = `
+    <header class="cv-head">
+      ${photoBlock}
+      <div>
+        <h1 class="cv-name">${escapeHtml(fullName)}</h1>
+        ${p.titre ? `<p class="cv-role">${escapeHtml(p.titre)}</p>` : ""}
+        ${contactBits ? `<div class="cv-contact">${contactBits}</div>` : ""}
+      </div>
+    </header>
+    <div class="cv-body">
+      ${state.profile ? section("Profil", `<p class="cv-profile">${escapeHtml(state.profile)}</p>`) : ""}
+      ${state.experiences.length ? section("Expérience", experienceHtml) : ""}
+      ${state.education.length ? section("Formation", educationHtml) : ""}
+      ${state.skills.length ? section("Compétences", skillsHtml) : ""}
+      ${state.projects.length ? section("Projets", projectsHtml) : ""}
+      ${state.languages.length ? section("Langues", langHtml) : ""}
+      ${optionalHtml}
+      ${!state.profile && !state.experiences.length && !state.education.length && !state.skills.length
+        ? `<p class="empty-hint">Remplissez l'éditeur pour voir votre CV prendre forme ici.</p>` : ""}
+    </div>
+  `;
+  sheet.style.setProperty("--accent", state.settings.color);
+  document.documentElement.style.setProperty("--accent", state.settings.color);
+  updateSpacingScale(sheet);
+}
+
+/* Espacement intelligent : ne touche JAMAIS à la taille du texte (qui reste
+   standard, 14px, sur tous les modèles). On ajuste uniquement les espaces
+   entre les informations (entre sections, entre expériences, autour des
+   en-têtes...) : ils se resserrent un peu si le CV est dense, et se
+   déploient un peu si le CV est bref, pour combler le vide en bas de page —
+   toujours dans une fourchette raisonnable, jamais de façon exagérée.
+   Méthode : on mesure la hauteur du texte "brut" (espaces réduits à zéro)
+   pour isoler ce qui, dans la hauteur totale, correspond réellement aux
+   espaces entre les informations, puis on résout l'écart nécessaire pour
+   remplir au mieux une page A4. */
+function updateSpacingScale(sheet) {
+  const head = sheet.querySelector(".cv-head");
+  const body = sheet.querySelector(".cv-body");
+  if (!head || !body) return;
+
+  const MIN_SCALE = 0.7, MAX_SCALE = 1.6;
+  const PAGE_HEIGHT_PX = 297 * 3.7795; // hauteur A4 en pixels (96dpi)
+
+  const cs = getComputedStyle(sheet);
+  const padTop = parseFloat(cs.paddingTop) || 0;
+  const padBottom = parseFloat(cs.paddingBottom) || 0;
+
+  sheet.style.setProperty("--cv-gap-scale", "0");
+  const textOnly = body.scrollHeight;
+
+  sheet.style.setProperty("--cv-gap-scale", "1");
+  const natural = body.scrollHeight;
+
+  if (natural < 40) { sheet.style.setProperty("--cv-gap-scale", "1"); return; }
+
+  const gapTotal = natural - textOnly;
+  const available = PAGE_HEIGHT_PX - padTop - head.offsetHeight - padBottom;
+
+  if (available <= 0 || gapTotal <= 4) { sheet.style.setProperty("--cv-gap-scale", "1"); return; }
+
+  let scale = (available - textOnly) / gapTotal;
+  scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale));
+  sheet.style.setProperty("--cv-gap-scale", scale.toFixed(3));
+}
+
+
+function section(title, inner) {
+  return `<section class="cv-section"><h3>${title}</h3>${inner}</section>`;
+}
+function renderEntriesForSheet(list, mapFn) {
+  if (!list.length) return `<p class="empty-hint">Rien à afficher pour l'instant.</p>`;
+  return list.map(item => {
+    const m = mapFn(item);
+    return `
+      <div class="entry">
+        <div class="entry-top">
+          <span class="entry-title">${escapeHtml(m.title)}${m.sub ? ` — ${escapeHtml(m.sub)}` : ""}</span>
+          ${m.right ? `<span class="entry-dates">${escapeHtml(m.right)}</span>` : ""}
+        </div>
+        ${item.description ? `<div class="entry-desc">${escapeHtml(item.description)}</div>` : ""}
+      </div>`;
+  }).join("");
+}
+function dateRange(e) {
+  const start = e.dateDebut || "";
+  const end = e.enCours ? "Aujourd'hui" : (e.dateFin || "");
+  return [start, end].filter(Boolean).join(" — ");
+}
+function formatDateNaissance(iso) {
+  if (!iso) return "";
+  const d = new Date(iso + "T00:00:00");
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+}
+function composeAdresse(p) {
+  const ligne2 = [p.codePostal, p.ville].filter(Boolean).join(" ");
+  return [p.adresse, ligne2, p.pays].filter(Boolean).join(", ");
+}
+function placeholderAvatar() {
+  return "data:image/svg+xml," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23EDEAE0'/><circle cx='50' cy='40' r='18' fill='%23C9C5B8'/><ellipse cx='50' cy='88' rx='30' ry='22' fill='%23C9C5B8'/></svg>`);
+}
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function escapeAttr(str) { return escapeHtml(str); }
+
+/* =====================================================================
+   DESIGN — couleurs / typo / photo
+   ===================================================================== */
+function renderDesignPanel() {
+  document.querySelectorAll("#templateOptions .option-chip").forEach(btn => {
+    btn.classList.toggle("is-active", btn.dataset.template === state.settings.template);
+    btn.onclick = () => { state.settings.template = btn.dataset.template; renderDesignPanel(); renderPreview(); scheduleSave(); };
+  });
+
+  const swatchWrap = document.getElementById("colorSwatches");
+  swatchWrap.innerHTML = COLORS.map(c => `<button type="button" class="swatch ${state.settings.color === c ? "is-active" : ""}" style="background:${c}" data-color="${c}" aria-label="Choisir cette couleur"></button>`).join("");
+  swatchWrap.querySelectorAll(".swatch").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.settings.color = btn.dataset.color;
+      renderDesignPanel(); renderPreview(); scheduleSave();
+    });
+  });
+
+  document.querySelectorAll("#photoOptions .option-chip").forEach(btn => {
+    btn.classList.toggle("is-active", btn.dataset.photo === state.settings.photoShape);
+    btn.onclick = () => { state.settings.photoShape = btn.dataset.photo; renderDesignPanel(); renderPreview(); scheduleSave(); };
+  });
+  document.querySelectorAll("#fontOptions .option-chip").forEach(btn => {
+    btn.classList.toggle("is-active", btn.dataset.font === state.settings.font);
+    btn.onclick = () => { state.settings.font = btn.dataset.font; renderDesignPanel(); renderPreview(); scheduleSave(); };
+  });
+}
+
+/* =====================================================================
+   EXPORT
+   ===================================================================== */
+function setExportStatus(msg, type) {
+  const el = document.getElementById("exportStatus");
+  el.textContent = msg;
+  el.className = "export-status" + (type ? ` is-${type}` : "");
+}
+
+function setExportButtonsBusy(busy) {
+  ["exportPdfBtn", "exportPngBtn", "printBtn"].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = busy;
+  });
+}
+
+function outputFileName(ext) {
+  const name = `${state.personal.prenom || "CV"}-${state.personal.nom || "Pro"}`.trim().replace(/\s+/g, "-");
+  return `${name}.${ext}`;
+}
+
+/* Capture la feuille en haute définition. Attend d'abord le chargement complet
+   des polices (Fraunces / Inter) : sans ça, un export lancé juste après l'ouverture
+   de l'app pouvait figer une police de secours à la place de la bonne typo. */
+async function captureSheetCanvas() {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) { /* tant pis, on continue */ }
+  }
+  const sheet = document.getElementById("cvSheet");
+  const clone = sheet.cloneNode(true);
+  clone.style.transform = "none";
+  clone.style.margin = "0";
+  clone.style.position = "fixed";
+  clone.style.top = "0";
+  clone.style.left = "-99999px";
+  document.body.appendChild(clone);
+  try {
+    // scale élevé pour un rendu net à l'impression (HD), plafonné pour rester performant
+    const scale = Math.min(4, Math.max(2, window.devicePixelRatio * 2 || 3));
+    return await html2canvas(clone, { scale, useCORS: true, backgroundColor: "#ffffff" });
+  } finally {
+    document.body.removeChild(clone);
+  }
+}
+
+/* Enregistre réellement le fichier sur l'appareil de l'utilisateur.
+   Sur mobile, le partage natif (navigator.share) propose directement
+   "Enregistrer dans Fichiers" / "Enregistrer l'image" — plus fiable qu'un
+   simple lien de téléchargement, qui atterrit parfois dans un dossier caché
+   du navigateur. On retombe sur le téléchargement classique si indisponible. */
+async function saveFileToDevice(blob, filename, mime) {
+  if (navigator.canShare && navigator.share) {
+    try {
+      const file = new File([blob], filename, { type: mime });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: filename });
+        return "shared";
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return "cancelled";
+      /* on retombe sur le téléchargement direct ci-dessous */
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  return "downloaded";
+}
+
+async function exportPdf() {
+  setExportButtonsBusy(true);
+  setExportStatus("⏳ Génération du PDF en haute définition...");
+  try {
+    const canvas = await captureSheetCanvas();
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: "mm", format: "a4", compress: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pageHeight = 297;
+    const imgHeight = (canvas.height * 210) / canvas.width;
+    // Tolérance pour ignorer un léger dépassement dû aux arrondis
+    // (px -> mm) : sans elle, un CV qui tient exactement sur une page
+    // pouvait déclencher une seconde page quasiment vide.
+    const EPS = 1.5;
+    let heightLeft = imgHeight, position = 0;
+
+    pdf.addImage(imgData, "PNG", 0, position, 210, imgHeight, undefined, "FAST");
+    heightLeft -= pageHeight;
+    while (heightLeft > EPS) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, 210, imgHeight, undefined, "FAST");
+      heightLeft -= pageHeight;
+    }
+
+    const blob = pdf.output("blob");
+    const result = await saveFileToDevice(blob, outputFileName("pdf"), "application/pdf");
+    setExportStatus(
+      result === "cancelled" ? "Export annulé." :
+      result === "shared" ? "✅ PDF prêt — choisissez où l'enregistrer." :
+      "✅ PDF téléchargé sur votre appareil !",
+      result === "cancelled" ? undefined : "success"
+    );
+  } catch (e) {
+    setExportStatus("❌ Impossible de générer le PDF. Réessayez.", "error");
+  } finally {
+    setExportButtonsBusy(false);
+  }
+}
+
+async function exportPng() {
+  setExportButtonsBusy(true);
+  setExportStatus("⏳ Génération de l'image en haute définition...");
+  try {
+    const canvas = await captureSheetCanvas();
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png", 1));
+    if (!blob) throw new Error("toBlob a échoué");
+    const result = await saveFileToDevice(blob, outputFileName("png"), "image/png");
+    setExportStatus(
+      result === "cancelled" ? "Export annulé." :
+      result === "shared" ? "✅ Image prête — choisissez où l'enregistrer." :
+      "✅ Image téléchargée sur votre appareil !",
+      result === "cancelled" ? undefined : "success"
+    );
+  } catch (e) {
+    setExportStatus("❌ Impossible de générer l'image. Réessayez.", "error");
+  } finally {
+    setExportButtonsBusy(false);
+  }
+}
+
+/* =====================================================================
+   VISIONNEUSE APERÇU — zoom & déplacement façon liseuse
+   ===================================================================== */
+const viewer = { zoom: 1, x: 0, y: 0, minZoom: 0.5, maxZoom: 3.5 };
+const activePointers = new Map();
+let pinchStartDist = 0;
+let pinchStartZoom = 1;
+let dragStart = null;
+
+function clampZoom(z) { return Math.min(viewer.maxZoom, Math.max(viewer.minZoom, z)); }
+
+function applyViewerTransform() {
+  const stage = document.getElementById("paperStage");
+  if (!stage) return;
+  stage.style.transform = `translate(${viewer.x}px, ${viewer.y}px) scale(${viewer.zoom})`;
+  const resetBtn = document.getElementById("zoomResetBtn");
+  if (resetBtn) resetBtn.textContent = `${Math.round(viewer.zoom * 100)}%`;
+  const vp = document.getElementById("previewViewport");
+  if (vp) vp.classList.toggle("is-zoomed", viewer.zoom > 1.02);
+}
+
+function resetViewer() {
+  viewer.zoom = 1; viewer.x = 0; viewer.y = 0;
+  applyViewerTransform();
+}
+
+function setupViewer() {
+  const vp = document.getElementById("previewViewport");
+  if (!vp || vp.dataset.bound) return;
+  vp.dataset.bound = "1";
+
+  vp.addEventListener("wheel", e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.15 : 0.15;
+    viewer.zoom = clampZoom(viewer.zoom + delta);
+    applyViewerTransform();
+  }, { passive: false });
+
+  vp.addEventListener("pointerdown", e => {
+    vp.setPointerCapture(e.pointerId);
+    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (activePointers.size === 1) {
+      dragStart = { px: e.clientX, py: e.clientY, x: viewer.x, y: viewer.y };
+      vp.classList.add("is-dragging");
+    } else if (activePointers.size === 2) {
+      const pts = [...activePointers.values()];
+      pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      pinchStartZoom = viewer.zoom;
+      dragStart = null;
+    }
+  });
+
+  vp.addEventListener("pointermove", e => {
+    if (!activePointers.has(e.pointerId)) return;
+    activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (activePointers.size === 2) {
+      const pts = [...activePointers.values()];
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+      if (pinchStartDist > 0) {
+        viewer.zoom = clampZoom(pinchStartZoom * (dist / pinchStartDist));
+        applyViewerTransform();
+      }
+    } else if (activePointers.size === 1 && dragStart) {
+      viewer.x = dragStart.x + (e.clientX - dragStart.px);
+      viewer.y = dragStart.y + (e.clientY - dragStart.py);
+      applyViewerTransform();
+    }
+  });
+
+  function endPointer(e) {
+    activePointers.delete(e.pointerId);
+    if (activePointers.size < 2) pinchStartDist = 0;
+    if (activePointers.size === 0) { dragStart = null; vp.classList.remove("is-dragging"); }
+  }
+  vp.addEventListener("pointerup", endPointer);
+  vp.addEventListener("pointercancel", endPointer);
+  vp.addEventListener("pointerleave", endPointer);
+
+  vp.addEventListener("dblclick", () => {
+    if (viewer.zoom > 1.05) resetViewer();
+    else { viewer.zoom = 2; applyViewerTransform(); }
+  });
+
+  document.getElementById("zoomInBtn")?.addEventListener("click", () => { viewer.zoom = clampZoom(viewer.zoom + 0.25); applyViewerTransform(); });
+  document.getElementById("zoomOutBtn")?.addEventListener("click", () => { viewer.zoom = clampZoom(viewer.zoom - 0.25); applyViewerTransform(); });
+  document.getElementById("zoomResetBtn")?.addEventListener("click", resetViewer);
+
+  applyViewerTransform();
+}
+
+/* =====================================================================
+   INITIALISATION
+   ===================================================================== */
+function init() {
+  const hadSaved = loadState();
+  document.getElementById("resumeBtn").hidden = !hadSaved;
+
+  document.getElementById("startBtn").addEventListener("click", () => { showScreen("screen-editor"); showPane("edit"); renderAll(); });
+  document.getElementById("resumeBtn").addEventListener("click", () => { showScreen("screen-editor"); showPane("edit"); renderAll(); });
+  document.getElementById("seeTemplatesBtn").addEventListener("click", () => {
+    document.getElementById("homeTemplates").scrollIntoView({ behavior: "smooth" });
+  });
+  document.querySelectorAll(".template-card.is-ready").forEach(card => {
+    card.addEventListener("click", () => {
+      state.settings.template = card.dataset.template;
+      showScreen("screen-editor"); showPane("edit"); renderAll();
+    });
+  });
+  document.getElementById("backHomeBtn").addEventListener("click", () => showScreen("screen-home"));
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if (confirm("Réinitialiser votre CV ? Cette action est irréversible.")) {
+      localStorage.removeItem(STORAGE_KEY);
+      state = defaultState();
+      currentStep = 0;
+      renderAll();
+    }
+  });
+
+  document.getElementById("prevStepBtn").addEventListener("click", () => { if (currentStep > 0) { currentStep--; renderStep(); } });
+  document.getElementById("nextStepBtn").addEventListener("click", () => {
+    if (currentStep < STEPS.length - 1) { currentStep++; renderStep(); }
+    else { showPane("preview"); }
+  });
+
+  document.querySelectorAll(".tabbar-btn").forEach(btn => {
+    btn.addEventListener("click", () => showPane(btn.dataset.pane));
+  });
+
+  document.getElementById("photoFileInput").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => { state.personal.photo = reader.result; renderStep(); renderPreview(); scheduleSave(); };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("exportPdfBtn").addEventListener("click", exportPdf);
+  document.getElementById("exportPngBtn").addEventListener("click", exportPng);
+  document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+  window.addEventListener("resize", updateSheetScale);
+}
+
+function renderAll() {
+  renderStep();
+  renderPreview();
+  renderDesignPanel();
+  updateSheetScale();
+  setupViewer();
+}
+
+function updateSheetScale() {
+  const stage = document.querySelector(".paper-stage");
+  if (!stage) return;
+  const isDesktop = window.innerWidth >= 1024;
+  const available = isDesktop ? stage.clientWidth - 4 : stage.clientWidth - 24;
+  const scale = Math.min(available / (210 * 3.7795), isDesktop ? 0.75 : 0.5);
+  document.documentElement.style.setProperty("--sheet-scale", scale.toFixed(3));
+}
+
+document.addEventListener("DOMContentLoaded", init);
+})();
+
+</script>
+</body>
+</html>
